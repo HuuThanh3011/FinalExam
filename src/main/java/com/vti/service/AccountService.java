@@ -175,8 +175,10 @@ public class AccountService implements IAccountService {
         validateAccountDeleting(id);
         Account account = accountRepository.findById(id).get();
         Department department = account.getDepartment();
-        department.totalMember(department.getTotalMember() - 1);
-        departmentRepository.save(department);
+        if (department != null) {
+            department.totalMember(department.getTotalMember() - 1);
+            departmentRepository.save(department);
+        }
         accountRepository.delete(account);
         AccountDTO accountDTO = modelMapper.map(account, AccountDTO.class);
         return accountDTO;
